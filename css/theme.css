@@ -1,0 +1,51 @@
+/* ==========================================================================
+   SentriDose - Member 3: Visual & Demo Experience
+   Theme & Design Tokens (Industrial Safety Monitoring Palette)
+   ========================================================================== */
+
+:root {
+  /* Surface & Background Colors */
+  --bg-base: #080c10;
+  --bg-surface: #0e141c;
+  --bg-elevated: #151d27;
+  --bg-card: #1c2633;
+  --bg-card-hover: #222f3f;
+
+  /* Border & Divider Colors */
+  --border-subtle: #1e293b;
+  --border-medium: #2e3d52;
+  --border-highlight: #3b82f6;
+
+  /* Core Industrial Accent Palette */
+  --accent-primary: #38bdf8;
+  --accent-primary-hover: #0ea5e9;
+  --accent-primary-glow: rgba(56, 189, 248, 0.15);
+  --accent-steel: #64748b;
+
+  /* Status Tokens */
+  --status-ready: #10b981;
+  --status-ready-bg: rgba(16, 185, 129, 0.12);
+  --status-ready-border: rgba(16, 185, 129, 0.28);
+  --status-ready-glow: rgba(16, 185, 129, 0.4);
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #38bdf8;
+
+  /* Typography Families */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --font-display: 'Space Grotesk', var(--font-sans);
+
+  /* Shadows & Elevations */
+  --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-medium);
+  --shadow-button: 0 4px 16px rgba(56, 189, 248, 0.2);
+
+  /* Animation Timings */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}

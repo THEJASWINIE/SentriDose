@@ -1,0 +1,22 @@
+/* ==========================================================================
+   SentriDose - Member 3: Atmospheric Particle Visualization
+   Subtle Industrial Gas Environmental Visualization Styling
+   ========================================================================== */
+
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+  display: block;
+}
+
+/* Ensure application UI layers properly above ambient particles */
+.app-viewport {
+  position: relative;
+  z-index: 1;
+}

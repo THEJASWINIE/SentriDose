@@ -1,0 +1,452 @@
+/* ==========================================================================
+   SentriDose - Member 3: Dosimeter Wristband / Colorimetric Strip Visualizer
+   Industrial Wearable Reagent & Optical Reading Component
+   ========================================================================== */
+
+.dosimeter-card {
+  background: rgba(14, 20, 28, 0.75);
+  border: 1px solid var(--border-medium);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.75rem auto 2rem;
+  width: 100%;
+  max-width: 660px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: left;
+  transition: border-color var(--transition-normal);
+}
+
+/* Header */
+.dosimeter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dosimeter-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.icon-band {
+  width: 15px;
+  height: 15px;
+  color: var(--accent-primary);
+}
+
+.badge-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #10b981;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  transition: all var(--transition-normal);
+}
+
+.badge-status-pill.expired {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+}
+
+.status-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Main Body Layout */
+.dosimeter-body {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+/* Stylized Wristband Representation */
+.wristband-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+.strap-top, .strap-bottom {
+  width: 90px;
+  height: 24px;
+  background: linear-gradient(90deg, #18202a 0%, #253344 50%, #18202a 100%);
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.strap-top {
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+
+.strap-bottom {
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Central Sensor Housing */
+.sensor-housing {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, #131b24 0%, #0d131a 100%);
+  border: 2px solid var(--border-medium);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+/* Alignment Guide Corners */
+.alignment-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--accent-primary);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.alignment-corner.top-left { top: 6px; left: 6px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.alignment-corner.top-right { top: 6px; right: 6px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.alignment-corner.bottom-left { bottom: 6px; left: 6px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.alignment-corner.bottom-right { bottom: 6px; right: 6px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+/* Subtle Optical Scanline */
+.optical-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.7) 50%, transparent 100%);
+  animation: scanline-sweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes scanline-sweep {
+  0% { top: 4%; opacity: 0; }
+  15% { opacity: 0.9; }
+  85% { opacity: 0.9; }
+  100% { top: 94%; opacity: 0; }
+}
+
+/* Sensing Reagent Strip */
+.colorimetric-strip-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  z-index: 1;
+}
+
+.strip-label {
+  font-family: var(--font-mono);
+  font-size: 0.575rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.colorimetric-strip {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f7f3eb 0%, #ebe2d3 100%); /* Default LOW */
+  border: 1.5px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: background 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+/* Color States for Strip */
+.colorimetric-strip.state-low {
+  background: linear-gradient(135deg, #f7f3eb 0%, #ebe2d3 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 12px rgba(247, 243, 235, 0.15);
+}
+
+.colorimetric-strip.state-medium {
+  background: linear-gradient(135deg, #b89158 0%, #8f6b38 100%);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4), 0 0 12px rgba(184, 145, 88, 0.2);
+}
+
+.colorimetric-strip.state-high {
+  background: linear-gradient(135deg, #3a261a 0%, #1c110a 100%);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6), 0 0 14px rgba(239, 68, 68, 0.2);
+}
+
+.colorimetric-strip.state-expired {
+  background: repeating-linear-gradient(
+    45deg,
+    #2c251f,
+    #2c251f 6px,
+    #3f352c 6px,
+    #3f352c 12px
+  );
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+  filter: grayscale(0.5);
+}
+
+/* Expiration Lockout Overlay */
+.expired-lockout-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 15, 20, 0.85);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.expired-lockout-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lockout-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  color: #ef4444;
+}
+
+.lockout-badge svg {
+  width: 22px;
+  height: 22px;
+}
+
+.lockout-badge span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.lockout-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Right Column: Telemetry & Reference Scale */
+.dosimeter-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+/* Reference Scale */
+.reference-scale-block {
+  background: rgba(11, 15, 20, 0.45);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.65rem 0.85rem;
+}
+
+.scale-heading {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.reference-swatches {
+  display: flex;
+  gap: 1rem;
+}
+
+.swatch-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch-box {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.swatch-low .swatch-box { background: #ebe2d3; }
+.swatch-med .swatch-box { background: #a6804a; }
+.swatch-high .swatch-box { background: #2b1c12; }
+
+.swatch-text {
+  font-family: var(--font-mono);
+  font-size: 0.675rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+}
+
+/* Exposure Readout Block */
+.exposure-readout-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.readout-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Exposure Index Box */
+.exposure-index-box {
+  background: linear-gradient(180deg, rgba(21, 29, 39, 0.9) 0%, rgba(14, 20, 28, 0.9) 100%);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.index-caption {
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.index-value {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  transition: color var(--transition-normal);
+}
+
+/* Blocked Index Box for EXPIRED */
+.blocked-index-box {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px dashed rgba(239, 68, 68, 0.4);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.blocked-alert {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ef4444;
+}
+
+.blocked-sub {
+  font-family: var(--font-mono);
+  font-size: 0.675rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Current Level Badge */
+.current-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: fit-content;
+  transition: all var(--transition-normal);
+}
+
+.level-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Exposure Level Themes */
+.level-low {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.level-medium {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+}
+
+.level-high {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+.level-expired {
+  background: rgba(100, 116, 139, 0.15);
+  border: 1px solid rgba(100, 116, 139, 0.35);
+  color: #94a3b8;
+}
+
+/* Responsive adjustment */
+@media (max-width: 640px) {
+  .dosimeter-body {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .dosimeter-telemetry {
+    width: 100%;
+  }
+}
